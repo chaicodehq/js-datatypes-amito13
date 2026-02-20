@@ -36,11 +36,53 @@
  *
  * @example
  *   generateLocalPass({ name: "rahul sharma", from: "dadar", to: "andheri", classType: "first" })
- *   // => "MUMBAI LOCAL PASS\n---\nName: RAHUL SHARMA\nFrom: Dadar\nTo: Andheri\nClass: FIRST\nPass ID: FDADAND"
+ *   // =>
+          *  "MUMBAI LOCAL PASS
+          * \n---
+          * \nName: RAHUL SHARMA
+          * \nFrom: Dadar
+          * \nTo: Andheri
+          * \nClass: FIRST
+          * \nPass ID: FDADAND"
  *
  *   generateLocalPass(null)
  *   // => "INVALID PASS"
  */
 export function generateLocalPass(passenger) {
-  // Your code here
+  
+    if(typeof passenger !=="object" || passenger===null ) return "INVALID PASS"
+
+   
+  const { name, from, to, classType } = passenger;
+
+ 
+  if (
+    typeof name !== "string" || name === "" ||
+    typeof from !== "string" || from === "" ||
+    typeof to !== "string" || to === "" ||
+    typeof classType !== "string" || classType === ""
+  ) {
+    return "INzALID PASS";
+  }
+
+   let classLower = classType.toLowerCase();
+
+  if (classLower !== "first" && classLower !== "second") {
+    return "INVALID PASS";
+  }
+
+    let passId = classLower.charAt(0).toUpperCase() +
+    from.slice(0, 3).toUpperCase() +
+    to.slice(0, 3).toUpperCase();
+
+const titleCase = (str) =>
+    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    
+    return `MUMBAI LOCAL PASS
+---
+Name: ${name.toUpperCase()}
+From: ${titleCase(from)}
+To: ${titleCase(to)}
+Class: ${classLower.toUpperCase()}
+Pass ID: ${passId}`
 }

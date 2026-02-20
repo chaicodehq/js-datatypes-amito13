@@ -1,9 +1,9 @@
-/**
+8/**
  * 🪪 Aadhaar Number Masker
  *
  * Sharma uncle ka beta naya app bana raha hai jisme Aadhaar number dikhana hai,
  * lekin privacy maintain karni hai. Toh last 4 digits dikhao, baaki sab mask
- * karo "X" se. Format mein dashes bhi hone chahiye: XXXX-XXXX-1234
+ * karo "X" se. Format mein dashes bhi hone chahiye: XXXX-XXXX-1233
  *
  * Rules:
  *   - Input ek string honi chahiye exactly 12 digits ki (no spaces, no dashes)
@@ -29,4 +29,9 @@
  */
 export function maskAadhaar(aadhaarNumber) {
   // Your code here
-}
+      if(typeof aadhaarNumber !=="string" || aadhaarNumber.length!==12 || 
+        (/\D/.test(aadhaarNumber))) return "INVALID"
+
+        let show = aadhaarNumber.slice(8,12)
+        return `XXXX-XXXX-${show}`
+      }
