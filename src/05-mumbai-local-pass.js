@@ -62,7 +62,7 @@ export function generateLocalPass(passenger) {
     typeof to !== "string" || to === "" ||
     typeof classType !== "string" || classType === ""
   ) {
-    return "INzALID PASS";
+    return "INVALID PASS";
   }
 
    let classLower = classType.toLowerCase();

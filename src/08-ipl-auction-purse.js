@@ -44,5 +44,40 @@
  *   // => { ..., remaining: -1200, isOverBudget: true }
  */
 export function iplAuctionSummary(team, players) {
-  // Your code here
+     
+  if (
+    typeof team !== "object" || team === null || typeof team.purse !== "number" ||
+    team.purse <= 0
+  ) return null
+
+  if (!Array.isArray(players) || players.length === 0) return null;
+
+      let teamName = team.name
+      let budget = team.purse
+      
+      let totalSpent = players.reduce((sum,player)=>sum+=player.price,0)
+      let remaining = budget-totalSpent
+      let playerCount = players.length
+      let averagePrice = Math.round(totalSpent/playerCount)
+
+      let costliestPlayer = players.reduce((max,player)=>player.price>max.price? player: max)
+
+      let cheapestPlayer = players.reduce((min,player)=>player.price<min.price? player:min)
+        let  byRole = players.reduce((acc, player) => {
+        acc[player.role] = (acc[player.role] || 0) + 1;
+        return acc;
+      }, {});
+
+      let isOverBudget = totalSpent>budget
+      return {
+    teamName,
+    totalSpent,
+    remaining,
+    playerCount,
+    costliestPlayer,
+    cheapestPlayer,
+    averagePrice,
+    byRole,
+    isOverBudget
+  }
 }

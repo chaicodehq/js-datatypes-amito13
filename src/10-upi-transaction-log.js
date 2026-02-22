@@ -33,7 +33,7 @@
  *
  * @param {Array<{ id: string, type: string, amount: number, to: string, category: string, date: string }>} transactions
  * @returns {{ totalCredit: number, totalDebit: number, netBalance: number, transactionCount: number, avgTransaction: number, highestTransaction: object, categoryBreakdown: object, frequentContact: string, allAbove100: boolean, hasLargeTransaction: boolean } | null}
- *
+ *      
  * @example
  *   analyzeUPITransactions([
  *     { id: "T1", type: "credit", amount: 5000, to: "Salary", category: "income", date: "2025-01-01" },
@@ -48,4 +48,69 @@
  */
 export function analyzeUPITransactions(transactions) {
   // Your code here
+  if(!Array.isArray(transactions)|| transactions.length===0) return null
+  let validTxn = transactions.filter(txn=>
+    typeof txn.amount ==="number" && txn.amount>0 && (txn.type === "credit" || txn.type === "debit")
+  ) 
+
+  if (validTxn.length === 0) return null
+
+  let totalCredit = validTxn.reduce((total,current)=>{
+    if(current.type==="credit"){
+      return total+current.amount
+    }
+    return total
+  },0)
+
+  let totalDebit = validTxn.reduce((total,current)=>{
+    if(current.type==="debit"){
+      return total+current.amount
+    }
+    return total
+  },0)
+
+  let netBalance = totalCredit-totalDebit
+
+  let transactionCount =  validTxn.length
+  
+  let avgTransaction = Math.round((totalCredit+totalDebit)/transactionCount)
+
+  let highestTransaction = validTxn.reduce((highest,txn)=>{
+    return txn.amount>highest.amount?txn: highest
+  })
+
+  let categoryBreakdown = validTxn.reduce((acc,txn)=>{
+    if(!acc[txn.category]){
+      acc[txn.category] =0
+    }
+
+    acc[txn.category]+=txn.amount
+    return acc
+  },{})
+
+  let contactCount  = validTxn.reduce((acc,txn)=>{
+    if(!acc[txn.to]){
+      acc[txn.to] = 0
+    }
+
+    acc[txn.to]++
+    return acc
+  },{})
+
+  let frequentContact = 0
+  let max = 0
+
+  for(let contact in contactCount){
+   if (contactCount[contact] > max) {
+    max = contactCount[contact]
+    frequentContact = contact
+  }
+  }
+  
+  let allAbove100 = validTxn.every(txn=>txn.amount>100)
+
+  let hasLargeTransaction = validTxn.some(txn=>txn.amount>=5000)
+  return {
+    totalCredit,totalDebit,netBalance, transactionCount,avgTransaction,highestTransaction,categoryBreakdown,frequentContact,allAbove100,hasLargeTransaction
+  }
 }
