@@ -69,6 +69,7 @@ export function generateLocalPass(passenger) {
 
   if (classLower !== "first" && classLower !== "second") {
     return "INVALID PASS";
+    //fixing the inzalid-> invalid
   }
 
     let passId = classLower.charAt(0).toUpperCase() +

@@ -87,7 +87,7 @@ export function generateReportCard(student) {
     .filter(([subject, mark]) => mark >= 40)
     .map(([subject]) => subject);
 
-
+//also fixing the error shows in workflow
   const failedSubjects = subjectMarks
     .filter(([subject, mark]) => mark < 40)
     .map(([subject]) => subject);
